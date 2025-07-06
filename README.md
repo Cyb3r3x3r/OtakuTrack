@@ -27,6 +27,14 @@ OtakuTrack is a portfolio-worthy Flask web app that helps anime lovers track the
 
 ---
 
+## ⚙️ Environment Variables
+
+Create a `.env` file in the root directory (or configure these in the Render dashboard):
+
+```ini
+SECRET_KEY=your-secret-key
+```
+
 ## 🔐 Setup & Installation
 
 ```bash
@@ -41,4 +49,44 @@ source venv/bin/activate  # Windows: venv\Scripts\activate
 pip install -r requirements.txt
 
 # Run the app
-python app.py
+flask run
+```
+
+## 🚢 Deployment (Render)
+
+OtakuTrack is ready for deployment on Render:
+1. Create a new Web Service
+
+2. Connect your GitHub repo
+
+3. Use the provided render.yaml for setup
+
+4. Add environment variables (e.g., SECRET_KEY)
+
+5. Done! 🎉
+
+## 🔄 CI/CD (GitHub Actions)
+
+GitHub Actions workflow is set up in:
+```bash
+.github/workflows/workflow.yaml
+
+```
+## 📌 Roadmap
+
++ 🕵️ Add Search History
++ 🗒️ Add Custom Anime Notes
++ 🌙 Dark Mode Switch
++ 🖼️ Profile Picture Upload
+
+## ❤️Acknowledgements
+
++ Jikan API
++ MyAnimeList
++ Render
++ BeautifulSoup
+
+## 👨‍💻 Author
+
+### Shivam Raj
+Built for learning, fun, and as part of my developer portfolio.
