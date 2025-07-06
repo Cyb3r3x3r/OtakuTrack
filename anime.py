@@ -120,3 +120,7 @@ def delete_anime(anime_id):
     db.session.commit()
     flash(f"Deleted '{anime.title}' from your watchlist.", "success")
     return redirect(url_for('anime.watchlist'))
+
+@anime.route('/')
+def home():
+    return redirect(url_for('anime.dashboard'))
