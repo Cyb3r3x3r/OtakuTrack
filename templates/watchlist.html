@@ -1,0 +1,158 @@
+{% extends 'base.html' %}
+
+{% block title %}Your Full Anime Watchlist{% endblock %}
+
+{% block content %}
+<h2 class="text-2xl font-bold mb-6">👋 Welcome, {{ current_user.username }}! to OtakuTrack</h2>
+
+<h3 class="text-xl font-semibold mb-4">📋 Full Watchlist</h3>
+
+<!-- Plan to Watch Section -->
+<hr class="my-4">
+<h4 class="text-lg font-semibold text-[var(--berry-pink)] mb-2">🟡 Plan to Watch</h4>
+{% if plan_to_watch.items %}
+  <div class="overflow-x-auto">
+    <table class="min-w-full table-auto border border-gray-300 bg-white shadow">
+      <thead class="bg-[var(--peach)]">
+        <tr>
+          <th class="px-4 py-2">Title</th>
+          <th class="px-4 py-2">Episodes</th>
+          <th class="px-4 py-2">Status</th>
+          <th class="px-4 py-2">Rating</th>
+          <th class="px-4 py-2">Source</th>
+          <th class="px-4 py-2">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for anime in plan_to_watch.items %}
+        <tr class="text-center border-t">
+          <td class="px-4 py-2">{{ anime.title }}</td>
+          <td class="px-4 py-2">{{ anime.episodes }}</td>
+          <td class="px-4 py-2">{{ anime.status }}</td>
+          <td class="px-4 py-2">{{ anime.rating or 'N/A' }}</td>
+          <td class="px-4 py-2">{{ anime.source }}</td>
+          <td class="px-4 py-2">
+            <form action="{{ url_for('anime.update_status', anime_id=anime.id) }}" method="POST" class="mb-1">
+              <select name="watch_status" class="border rounded p-1">
+                <option value="Plan to Watch" {% if anime.watch_status == "Plan to Watch" %}selected{% endif %}>Plan to Watch</option>
+                <option value="Watching" {% if anime.watch_status == "Watching" %}selected{% endif %}>Watching</option>
+                <option value="Completed" {% if anime.watch_status == "Completed" %}selected{% endif %}>Completed</option>
+              </select>
+              <button type="submit" class="ml-2 px-2 py-1 text-white bg-[var(--berry-pink)] rounded hover:bg-[var(--deep-red)]">Update</button>
+            </form>
+            <form action="{{ url_for('anime.delete_anime', anime_id=anime.id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this anime?');">
+              <button type="submit" class="px-2 py-1 bg-red-500 text-white rounded hover:bg-red-700">Delete</button>
+            </form>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% set pagination = plan_to_watch %}
+{% set page_name = 'ptw_page' %}
+{% include 'pagination.html' %}
+{% else %}
+  <p>No anime in this category.</p>
+{% endif %}
+
+<!-- Watching Section -->
+<hr class="my-4">
+<h4 class="text-lg font-semibold text-[var(--berry-pink)] mb-2">🔁 Watching</h4>
+{% if watching.items %}
+  <div class="overflow-x-auto">
+    <table class="min-w-full table-auto border border-gray-300 bg-white shadow">
+      <thead class="bg-[var(--peach)]">
+        <tr>
+          <th class="px-4 py-2">Title</th>
+          <th class="px-4 py-2">Episodes</th>
+          <th class="px-4 py-2">Status</th>
+          <th class="px-4 py-2">Rating</th>
+          <th class="px-4 py-2">Source</th>
+          <th class="px-4 py-2">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for anime in watching.items %}
+        <tr class="text-center border-t">
+          <td class="px-4 py-2">{{ anime.title }}</td>
+          <td class="px-4 py-2">{{ anime.episodes }}</td>
+          <td class="px-4 py-2">{{ anime.status }}</td>
+          <td class="px-4 py-2">{{ anime.rating or 'N/A' }}</td>
+          <td class="px-4 py-2">{{ anime.source }}</td>
+          <td class="px-4 py-2">
+            <form action="{{ url_for('anime.update_status', anime_id=anime.id) }}" method="POST" class="mb-1">
+              <select name="watch_status" class="border rounded p-1">
+                <option value="Plan to Watch" {% if anime.watch_status == "Plan to Watch" %}selected{% endif %}>Plan to Watch</option>
+                <option value="Watching" {% if anime.watch_status == "Watching" %}selected{% endif %}>Watching</option>
+                <option value="Completed" {% if anime.watch_status == "Completed" %}selected{% endif %}>Completed</option>
+              </select>
+              <button type="submit" class="ml-2 px-2 py-1 text-white bg-[var(--berry-pink)] rounded hover:bg-[var(--deep-red)]">Update</button>
+            </form>
+            <form action="{{ url_for('anime.delete_anime', anime_id=anime.id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this anime?');">
+              <button type="submit" class="px-2 py-1 bg-red-500 text-white rounded hover:bg-red-700">Delete</button>
+            </form>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% set pagination = watching %}
+{% set page_name = 'page_watching' %}
+{% include 'pagination.html' %}
+{% else %}
+  <p>No anime in this category.</p>
+{% endif %}
+
+<!-- Completed Section -->
+<hr class="my-4">
+<h4 class="text-lg font-semibold text-[var(--berry-pink)] mb-2">✅ Completed</h4>
+{% if completed.items %}
+  <div class="overflow-x-auto">
+    <table class="min-w-full table-auto border border-gray-300 bg-white shadow">
+      <thead class="bg-[var(--peach)]">
+        <tr>
+          <th class="px-4 py-2">Title</th>
+          <th class="px-4 py-2">Episodes</th>
+          <th class="px-4 py-2">Status</th>
+          <th class="px-4 py-2">Rating</th>
+          <th class="px-4 py-2">Source</th>
+          <th class="px-4 py-2">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for anime in completed.items %}
+        <tr class="text-center border-t">
+          <td class="px-4 py-2">{{ anime.title }}</td>
+          <td class="px-4 py-2">{{ anime.episodes }}</td>
+          <td class="px-4 py-2">{{ anime.status }}</td>
+          <td class="px-4 py-2">{{ anime.rating or 'N/A' }}</td>
+          <td class="px-4 py-2">{{ anime.source }}</td>
+          <td class="px-4 py-2">
+            <form action="{{ url_for('anime.update_status', anime_id=anime.id) }}" method="POST" class="mb-1">
+              <select name="watch_status" class="border rounded p-1">
+                <option value="Plan to Watch" {% if anime.watch_status == "Plan to Watch" %}selected{% endif %}>Plan to Watch</option>
+                <option value="Watching" {% if anime.watch_status == "Watching" %}selected{% endif %}>Watching</option>
+                <option value="Completed" {% if anime.watch_status == "Completed" %}selected{% endif %}>Completed</option>
+              </select>
+              <button type="submit" class="ml-2 px-2 py-1 text-white bg-[var(--berry-pink)] rounded hover:bg-[var(--deep-red)]">Update</button>
+            </form>
+            <form action="{{ url_for('anime.delete_anime', anime_id=anime.id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this anime?');">
+              <button type="submit" class="px-2 py-1 bg-red-500 text-white rounded hover:bg-red-700">Delete</button>
+            </form>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% set pagination = completed %}
+{% set page_name = 'page_completed' %}
+{% include 'pagination.html' %}
+{% else %}
+  <p>No anime in this category.</p>
+{% endif %}
+
+<hr class="my-6">
+{% endblock %}

@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block title %}Forbidden - OtakuTrack{% endblock %}
+{% block content %}
+<div class="text-center py-20">
+  <h1 class="text-5xl font-bold mb-4">403</h1>
+  <p class="text-xl text-gray-700 mb-6">You don’t have permission to access this page.</p>
+  <a href="{{ url_for('anime.dashboard') }}" class="bg-[var(--berry-pink)] text-white px-4 py-2 rounded hover:bg-[var(--deep-red)]">Return to Dashboard</a>
+</div>
+{% endblock %}

@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block title %}Anime Search Results{% endblock %}
+
+{% block content %}
+<h2 class="text-2xl font-bold mb-4">🔍 Search Results</h2>
+
+{% for anime in anime_list %}
+<div class="bg-white border border-gray-300 rounded-md p-4 mb-4 shadow">
+  <p><strong>Title:</strong> {{ anime.title }}</p>
+  <p><strong>Episodes:</strong> {{ anime.episodes }}</p>
+  <p><strong>Status:</strong> {{ anime.status }}</p>
+  <p><strong>Source:</strong> {{ anime.source }}</p>
+  <p><strong>Rating:</strong> {{ anime.rating }}</p>
+  <p><strong>Link:</strong> <a href="{{ anime.link }}" target="_blank" class="text-[var(--berry-pink)] underline">View</a></p>
+
+  <form method="POST" action="{{ url_for('anime.add_scraped_anime') }}" class="mt-2">
+    <input type="hidden" name="title" value="{{ anime.title }}">
+    <input type="hidden" name="episodes" value="{{ anime.episodes }}">
+    <input type="hidden" name="status" value="{{ anime.status }}">
+    <input type="hidden" name="source" value="{{ anime.source }}">
+    <input type="hidden" name="rating" value="{{ anime.rating }}">
+    <input type="hidden" name="link" value="{{ anime.link }}">
+
+    <label for="watch_status" class="block mb-1 mt-2 font-semibold">Select Watch Status:</label>
+    <select name="watch_status" required class="border rounded p-1 mb-2">
+      <option value="Plan to Watch">Plan to Watch</option>
+      <option value="Watching">Watching</option>
+      <option value="Completed">Completed</option>
+    </select>
+
+    <button type="submit" class="bg-[var(--berry-pink)] text-white px-3 py-1 rounded hover:bg-[var(--deep-red)] transition">➕ Add to Watchlist</button>
+  </form>
+</div>
+{% endfor %}
+
+{% endblock %}

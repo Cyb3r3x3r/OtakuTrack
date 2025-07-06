@@ -1,0 +1,33 @@
+{% if pagination.pages > 1 %}
+<div class="flex justify-center mt-4">
+  <nav class="inline-flex rounded-md shadow-sm" aria-label="Pagination">
+
+    {% if pagination.has_prev %}
+    <a href="?{{ page_name }}={{ pagination.prev_num }}"
+       class="px-3 py-1 border border-gray-300 text-sm font-medium bg-white text-[var(--deep-red)] hover:bg-gray-100 rounded-l-md">
+      Previous
+    </a>
+    {% else %}
+    <span class="px-3 py-1 border border-gray-300 text-sm font-medium text-gray-400 bg-gray-100 rounded-l-md cursor-not-allowed">
+      Previous
+    </span>
+    {% endif %}
+
+    <span class="px-3 py-1 border-t border-b border-gray-300 text-sm font-medium bg-white text-[var(--berry-pink)]">
+      Page {{ pagination.page }} of {{ pagination.pages }}
+    </span>
+
+    {% if pagination.has_next %}
+    <a href="?{{ page_name }}={{ pagination.next_num }}"
+       class="px-3 py-1 border border-gray-300 text-sm font-medium bg-white text-[var(--deep-red)] hover:bg-gray-100 rounded-r-md">
+      Next
+    </a>
+    {% else %}
+    <span class="px-3 py-1 border border-gray-300 text-sm font-medium text-gray-400 bg-gray-100 rounded-r-md cursor-not-allowed">
+      Next
+    </span>
+    {% endif %}
+
+  </nav>
+</div>
+{% endif %}

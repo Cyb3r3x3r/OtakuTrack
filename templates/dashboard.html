@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="max-w-5xl mx-auto p-6">
+  <h2 class="text-3xl font-semibold text-center mb-6">Welcome, <span class="text-[var(--berry-pink)]">{{ current_user.username }}</span> 👋</h2>
+
+  <h3 class="text-xl font-semibold mb-4">🎯 What you <span class="text-[var(--deep-red)]">should watch</span> next!</h3>
+
+  {% if anime_list %}
+  <div class="overflow-x-auto">
+    <table class="w-full border border-gray-300 rounded-lg">
+      <thead class="bg-[var(--berry-pink)] text-white">
+        <tr>
+          <th class="py-2 px-4 text-left">Title</th>
+          <th class="py-2 px-4 text-left">Episodes</th>
+          <th class="py-2 px-4 text-left">Status</th>
+          <th class="py-2 px-4 text-left">Rating</th>
+          <th class="py-2 px-4 text-left">Source</th>
+        </tr>
+      </thead>
+      <tbody class="bg-white">
+        {% for anime in anime_list %}
+        <tr class="border-t">
+          <td class="py-2 px-4">{{ anime.title }}</td>
+          <td class="py-2 px-4">{{ anime.episodes }}</td>
+          <td class="py-2 px-4">{{ anime.watch_status }}</td>
+          <td class="py-2 px-4">{{ anime.rating or 'N/A' }}</td>
+          <td class="py-2 px-4">{{ anime.source }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <p class="text-center text-gray-500">No "Plan to Watch" anime found.</p>
+  {% endif %}
+
+  <div class="mt-8">
+    <form id="searchForm" method="POST" action="{{ url_for('anime.search_anime') }}" class="flex flex-col md:flex-row items-center gap-4">
+      <input type="text" name="anime_name" placeholder="Search anime..." required class="w-full md:w-auto flex-grow border px-3 py-2 rounded">
+      <button id="searchBtn" type="submit" class="bg-[var(--berry-pink)] text-white px-4 py-2 rounded hover:bg-[var(--deep-red)] transition">Search</button>
+    </form>
+    <div id="loading" class="hidden flex justify-center items-center mt-2 text-[var(--deep-red)] font-semibold">
+  <svg class="animate-spin h-5 w-5 mr-2 text-[var(--deep-red)]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+  </svg>
+  Searching...
+</div>
+    <p class="mt-4 text-center">
+      <a href="{{ url_for('anime.watchlist') }}" class="text-[var(--berry-pink)] underline">📂 View Full Watchlist</a>
+    </p>
+  </div>
+</div>
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const form = document.getElementById("searchForm");
+    const loading = document.getElementById("loading");
+    const btn = document.getElementById("searchBtn");
+
+    if (form && loading) {
+      form.addEventListener("submit", () => {
+        loading.classList.remove("hidden");
+        if (btn) btn.disabled = true;
+      });
+    }
+  });
+</script>
+{% endblock %}

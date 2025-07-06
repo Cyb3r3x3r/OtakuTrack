@@ -1,0 +1,88 @@
+<!-- templates/base.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}OtakuTrack{% endblock %}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <style>
+        :root {
+            --deep-red: #722323;
+            --berry-pink: #BA487F;
+            --peach: #FF9587;
+            --cream: #FFECCC;
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-[var(--cream)] text-[var(--deep-red)]">
+
+    <!-- Navbar -->
+    <nav x-data="{ open: false }" class="bg-[var(--deep-red)] text-white py-3 shadow-md">
+  <div class="max-w-6xl mx-auto px-4 flex justify-between items-center">
+    <!-- Logo with icon -->
+    <a href="{{ url_for('anime.dashboard') }}" class="flex items-center gap-2 text-xl font-bold">
+      <img src="{{ url_for('static', filename='favicon.ico') }}" alt="OtakuTrack Logo" class="w-6 h-6">
+      OtakuTrack
+    </a>
+
+    <!-- Hamburger Button -->
+    <button @click="open = !open" class="md:hidden focus:outline-none">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M4 6h16M4 12h16M4 18h16" />
+      </svg>
+    </button>
+
+    <!-- Menu Items -->
+    <div :class="{ 'block': open, 'hidden': !open }" class="md:flex md:items-center md:space-x-4 space-y-2 md:space-y-0 hidden w-full md:w-auto mt-3 md:mt-0 text-sm">
+      {% if current_user.is_authenticated %}
+        <a href="{{ url_for('anime.dashboard') }}" class="block md:inline hover:underline">Dashboard</a>
+        <a href="{{ url_for('anime.watchlist') }}" class="block md:inline hover:underline">Watchlist</a>
+        <a href="{{ url_for('auth.logout') }}" class="block md:inline hover:underline">Logout</a>
+      {% else %}
+        <a href="{{ url_for('auth.login') }}" class="block md:inline hover:underline">Login</a>
+        <a href="{{ url_for('auth.register') }}" class="block md:inline hover:underline">Register</a>
+      {% endif %}
+    </div>
+  </div>
+</nav>
+
+    <div class="container mx-auto px-4 py-6">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            {% for category, message in messages %}
+              <div id="flash-msg" class="p-3 rounded mb-4 text-white text-sm"
+                   style="background-color: {% if category == 'success' %}#BA487F{% else %}#722323{% endif %};">
+                {{ message }}
+              </div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+    </div>
+
+    <script>
+      setTimeout(() => {
+        const msg = document.getElementById("flash-msg");
+        if (msg) {
+          msg.style.transition = 'opacity 0.5s';
+          msg.style.opacity = '0';
+          setTimeout(() => msg.style.display = 'none', 500);
+        }
+      }, 3000);
+    </script>
+
+    <footer class="mt-16 bg-[#722323] text-white py-6 shadow-inner">
+      <div class="max-w-5xl mx-auto px-4 text-center space-y-2">
+        <p class="text-lg font-semibold">OtakuTrack</p>
+        <p class="text-sm">Track your anime. Never lose your watchlist again.</p>
+        <p class="text-xs text-gray-200">© {{ current_year or '2025' }} OtakuTrack. Built with ❤️ using Flask & TailwindCSS.</p>
+      </div>
+    </footer>
+
+</body>
+</html>
